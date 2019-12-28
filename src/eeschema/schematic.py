@@ -235,8 +235,6 @@ def eeschema_run_erc(schematic, output_dir, warning_as_error, generate_junit_xml
 
             # Do this now since we have to wait for KiCad anyway
             clipboard_store((output_dir.encode('utf-8')))
-            # TODO: remove me
-            # sys.exit()
 
             logger.info('Focus Electrical Rules Checker window')
             wait_for_window('Electrical Rules Checker', 'Electrical Rules Checker')
