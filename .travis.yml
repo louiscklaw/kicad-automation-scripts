@@ -2,6 +2,8 @@ dist: bionic
 
 script:
   - sh scripts/build.sh
+  - ls -l kicad-project/ERC_output
+  - ls -l kicad-project/SVG_output
 
 after_success:
   - id
