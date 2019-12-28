@@ -2,7 +2,7 @@
 
 
 echo 'Run schematic ERC'
-# sh scripts/run_erc.sh
+sh scripts/run_erc.sh
 
 # docker run --rm -t \
 #   -v $PWD/test/schematic:/kicad-project \
