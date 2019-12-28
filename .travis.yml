@@ -1,7 +1,8 @@
 dist: bionic
 
 script:
-  # - sh scripts/build_docker.sh
+  - docker login -u logickee -p $DOCKER_PASSWORD
+  - sudo sh scripts/build_docker.sh
   - sudo sh scripts/build.sh
   - ls -l test/schematic/ERC_output
   - ls -l test/schematic/SVG_output
@@ -15,6 +16,8 @@ after_success:
   - pipenv sync
   - pipenv run python3 merge.py
 
+
+
 notifications:
   slack:
     secure: "VbVYwIxoD0pWYod+yv1faTrk9yCEwuGEy87XO4GZc/HJaXxD15HHaY+5reLC588jjj0fay0BZ1mwhu03uY4g/tAm5tQqfGloPo23vhe63rp0gwfm3uK62N/5+nhGpnnxYnYWY5wTwmdw8wy9Q/6vBfDNXy0QYq65HxFCklF2uEz5RQfUoTUPhVrw9WMbl49nH7aeDRT0rM7/Dz3IaDDqpszNjHuBoaiZKBlsx/fwOFxjxJk/OgR+BFle00j25RCAkqgrB3WEs7iWCYwRP1ZaGkBVj6EVdvv1++YYnsITGt5sJnMlZqowXP0yEhgQscvc+Y1ds45ajZoAHfHajuuMjtGMl7BIurUeBfhmsnVsHx5/5FJfUHnZx6dzyQJfF4rTpLUGcnmbG2AhO7/F6RVdS9CFAyCCW6traxHMEsNtFJRiEeeZ3YP18DjaibA2y7xX1CNJZtsrtIpQhauok7p42uz5Kz0c2B1r1cxdb8Icd45NpFrDemZF5KPe2ksWaaPuCCp8DrkfDIW5B76cyovx/mO1oWRMBLGqhwcUAda1YE7/+rvEN5XY6Zf35bXL83htZ7fYv5GzXiKXt1R37ctVUMLqnFa5dyAcZsGh9YrxiXb3rcVPyPJzPwoPgCATipswS+jzd08DgN8h7FXYEg/lFz1xBlp5kU9Z+sEgty2ziQA="
@@ -26,3 +29,6 @@ env:
 
     # GITHUB_TOKEN
     - secure: "l8gBEeuMWha8pZNEyvV4a7C+EF2005QJlUngrxY+Y5CUTD55KX+txHuxOgs3SrpBdQ089UlENFKPe2Id/u2Oq4yIj6S6LrQmtgyWb1cTCIX3yiH0NZg2HxeG124vCtXgXQBV1fwc3qD78pyWcxl365gK7xm+4JNMf73PdYeEJjvki1ILCUoCvq7+vaafOzNX7ZxZ1HCXbVk2QM2jquk0hqHJO+YRwFbe4Lz56R6ueeJnOddOgJN4eQ806aFKW/A3AAJLUtO6xHqjKUzxTtDyn/pE75lZQX8U8AxvWjXDWRJs4Sy99AX2fVOeu24M32M8O3L8ArXJJm4foK1iwc/cStohNq3MKTgmRC3pAiDkyldFeFQYVj13rh3NCLaRW/xOPV9fC7jRR5CRSxMTiTB6KAOfHrP1FIM12IKoNvXXU73WO6VbgA7Uq3hASGk7Gy50jNpxtvUNjRDza4agt1xmhS2Y6Q/k1Y4Qn4bnmGsopzVFAmggDso8PkFjzoOptWq5tVPCnoNB4TafrLkjy8j00Be7ZH6+t/V0Ll3JUR2h43A/s7wNhGH0uCbOgQEO5bM8YBVx/B9GTbhp/96jbhe/SvbmIqyqvsWXYXSzED2uPm7xi+2Kan3bHTB7wo8kXN1E4ZJV7tbLwyULOTEXTRiHaaWG6xlnGwwtquSNWEenVJc="
+
+    #DOCKER_PASSWORD
+    - secure: EUOMoowqJIQ6kZOZwLMy3iFYwM0wzy51dlRsKY0QthHarFXkKEzwvgs8CAq5OSay942q6e6z1t+vq3pF6vX0LOTWK5stw8TyDS50uUc9cpdNsRruDuCd/O67J7U941tSZZEfLPMUDUyFGzOHL6AlMChafjIxj6GPf5UDSzcv4Ucy+co0XIgrgz/ahlV5zcsMHRBcZ84ysbLn5MGqI5F3lcJfdal1DL8PH9gRQjIFZpTbMlD0x/OWg4clGrjhcVSdSDJh3YYHFCnG+U/BL1e/6uMvMkdo/efcuLaMY8e2wUKb9Dmnt5D4TLgDAdhlXJaKQ3IC2Ajx7+DpXpA2IbyhHHZ/DWYbor/KpvR9T9ZNSK6g3/Dr8F0coc/YOyAaPNb6Qd+vQnrvjPKK+yxg0amTZzXrwdcXw/hiMmDooeWV64br4IhEnel6XZ/zUqdqIUCJBDnD/IByaqgpx4S/IJXqj/UyYxY2BDBGK62AkqHaN0ENUQQd9YaSXcGEvEZiFg6kmAZ2fx3YHbgLrSJuvouI4OXsueHNDwnJowyOP7yzPSAYoMMuu+XNePNoPfNmDIquxu4Yt3fInH7JNJip/LqY1UpvQ6oY6QG6moC2KjiHKIXTAdO2F1ZYGYyPk4pDeerC3kAKXL6kiIzO8kwTJiYXNyF/E02duehEtCAtEf5jVHY=
