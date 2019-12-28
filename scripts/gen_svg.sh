@@ -6,9 +6,9 @@ echo "output directory: $2"
 
 docker run --rm -it \
   -v $PWD/test/schematic:/kicad-project \
-  -v $PWD/src:/usr/lib/python2.7/dist-packages/kicadAutomation \
+  -v $PWD/src:/usr/lib/python3/dist-packages/kicadAutomation \
   logickee/kicad-automation-scripts \
-  python -m kicadAutomation.eeschema.schematic export /kicad-project/test.sch /kicad-project/SVG_output
+  python3 -m kicadAutomation.eeschema.schematic export /kicad-project/test.sch /kicad-project/SVG_output
 
 sudo chown 1000:1000 -R test/schematic/SVG_output
 

@@ -3,7 +3,7 @@
 
 echo 'Run schematic ERC'
 sh scripts/run_erc.sh
-sh scripts/gen_svg.sh
+# sh scripts/gen_svg.sh
 
 # docker run --rm -t \
 #   -v $PWD/test/schematic:/kicad-project \
