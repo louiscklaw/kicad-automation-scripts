@@ -5,6 +5,7 @@ COPY src/requirements.txt .
 RUN apt-get -y update && \
     apt-get install -y python python-pip xvfb recordmydesktop xdotool xclip && \
     apt-get install -y dbus-x11 && \
+    apt-get install -y at-spi2-core && \
     pip install -r requirements.txt
 
 # Use a UTF-8 compatible LANG because KiCad 5 uses UTF-8 in the PCBNew title
