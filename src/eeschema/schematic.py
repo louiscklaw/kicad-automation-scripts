@@ -72,7 +72,8 @@ def eeschema_plot_schematic(output_directory, file_format, all_pages):
     if file_format not in ('pdf', 'svg'):
         raise ValueError("file_format should be 'pdf' or 'svg'")
 
-    clipboard_store(output_dir)
+
+    clipboard_store(bytearray(output_dir.encode('utf-8')))
 
     dismiss_library_warning()
     # dismiss_newer_version()
