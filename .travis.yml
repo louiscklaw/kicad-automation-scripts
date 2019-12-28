@@ -1,7 +1,7 @@
 dist: bionic
 
 script:
-  - hostname
+  - sh scripts/build.sh
 
 after_success:
   - id
