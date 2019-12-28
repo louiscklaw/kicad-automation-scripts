@@ -3,8 +3,8 @@ dist: bionic
 script:
   # - sh scripts/build_docker.sh
   - sudo sh scripts/build.sh
-  # - ls -l test/schematic/ERC_output
-  # - ls -l test/schematic/SVG_output
+  - ls -l test/schematic/ERC_output
+  - ls -l test/schematic/SVG_output
 
 after_success:
   - id
