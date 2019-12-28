@@ -1,4 +1,4 @@
-FROM logickee/kicad
+FROM logickee/kicad-base
 
 COPY src/requirements.txt .
 
