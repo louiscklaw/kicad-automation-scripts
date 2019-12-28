@@ -10,4 +10,4 @@ docker run --rm -it \
   logickee/kicad-automation-scripts \
   python -m kicadAutomation.eeschema.schematic export /kicad-project/test.sch /kicad-project/SVG_output
 
-sudo chown 1000:1000 -R test/schematic/SVG_output
+chown 1000:1000 -R test/schematic/SVG_output
