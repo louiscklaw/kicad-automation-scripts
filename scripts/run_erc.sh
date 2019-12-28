@@ -11,3 +11,5 @@ docker run --rm -it \
   python -m kicadAutomation.eeschema.schematic run_erc /kicad-project/test.sch /kicad-project/ERC_output
 
 sudo chown 1000:1000 -R test/schematic/ERC_output
+
+echo 'run-erc done'
