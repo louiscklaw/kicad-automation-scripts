@@ -2,12 +2,17 @@
 
 
 echo 'Run schematic ERC'
-sh scripts/run_erc.sh
+# sh scripts/run_erc.sh
+docker run --rm -it \
+  -v $PWD/test/schematic:/kicad-project \
+  -v $PWD/src:/usr/lib/python2.7/dist-packages/kicadAutomation \
+  logickee/kicad-automation-scripts \
+  python -m kicadAutomation.eeschema.schematic run_erc /kicad-project/test.sch /kicad-project/ERC_output
 ls -l test/schematic/ERC_output
 
-echo 'Export a schematic to PDF or SVG'
-sh scripts/gen_svg.sh
-ls -l test/schematic/SVG_output
+# echo 'Export a schematic to PDF or SVG'
+# sh scripts/gen_svg.sh
+# ls -l test/schematic/SVG_output
 
 # echo 'Run layout DRC:'
 # docker run --rm -it \
