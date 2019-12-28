@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 
 
-docker build -t logickee/kicad:latest $PWD/Dockerfile.kicad
-docker push logickee/kicad
-
-docker build -t logickee/kicad-automation-scripts .
-docker push logickee/kicad-automation-scripts
-
-sudo rm -rf $PWD/test/schematic/ERC_output
-sudo rm -rf $PWD/test/schematic/SVG_output
-sudo rm -rf $PWD/test/schematic/DRC_output
-sudo rm -rf $PWD/test/schematic/output
-
 echo 'Run schematic ERC'
 docker run --rm -it \
   -v $PWD/test/schematic:/kicad-project \
@@ -52,5 +41,3 @@ docker run --rm -t \
 #   -v $PWD/test/schematic:/kicad-project \
 #   -v $PWD/src:/usr/lib/python2.7/dist-packages/kicadAutomation \
 #   logickee/kicad-automation-scripts /bin/bash
-
-# docker image rm $(docker image ls -qa)
