@@ -1,5 +1,7 @@
 
 *bak
+test/schematic/SVG_output
+test/schematic/ERC_output
 
 *.pyc
 */__pycache__/
