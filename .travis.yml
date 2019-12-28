@@ -1,7 +1,7 @@
 dist: bionic
 
 script:
-  - sh scripts/build.sh
+  - sudo sh scripts/build.sh
   - ls -l test/schematic/ERC_output
   - ls -l test/schematic/SVG_output
 
