@@ -77,52 +77,63 @@ def run_drc(pcb_file, output_dir, record=True):
     recording_file = os.path.join(output_dir, 'run_drc_screencast.ogv')
     drc_output_file = os.path.join(os.path.abspath(output_dir), 'drc_result.rpt')
 
-    xvfb_kwargs = {
-	    'width': 800,
-	    'height': 600,
-	    'colordepth': 24,
-    }
+    print(f'recorded file {recording_file}')
 
-    with recorded_xvfb(recording_file, **xvfb_kwargs) if record else Xvfb(**xvfb_kwargs):
-        with PopenContext(['pcbnew', pcb_file], close_fds=True) as pcbnew_proc:
-            clipboard_store(drc_output_file)
+    # TODO: remove me
+    # xvfb_kwargs = {
+	#     'width': 800,
+	#     'height': 600,
+	#     'colordepth': 24,
+    # }
 
-            window = wait_for_window('pcbnew', 'Pcbnew', 10, False)
+    # with recorded_xvfb(recording_file, **xvfb_kwargs) if record else Xvfb(**xvfb_kwargs):
+    with recorded_xvfb(recording_file, width=1024, height=768, colordepth=24):
+        try:
+            with PopenContext(['pcbnew', pcb_file], close_fds=True) as pcbnew_proc:
+                # # modify for python3
+                clipboard_store(bytearray(drc_output_file.encode('utf-8')))
 
-            logger.info('Focus main pcbnew window')
-            wait_for_window('pcbnew', 'Pcbnew')
+                window = wait_for_window('pcbnew', 'Pcbnew', 10, False)
 
-            # Needed to rebuild the menu, making sure it is actually built
-            xdotool(['windowsize', '--sync', window, '750', '600'])
+                logger.info('Focus main pcbnew window')
+                wait_for_window('pcbnew', 'Pcbnew')
 
-            wait_for_window('pcbnew', 'Pcbnew')
+                # Needed to rebuild the menu, making sure it is actually built
+                xdotool(['windowsize', '--sync', window, '750', '600'])
 
-            logger.info('Open Inspect->DRC')
-            xdotool(['key', 'alt+i', 'd'])
+                wait_for_window('pcbnew', 'Pcbnew')
 
-            logger.info('Focus DRC modal window')
-            wait_for_window('DRC modal window', 'DRC Control')
-            xdotool(['key',
-                'Tab',
-                'Tab',
-                'Tab', # Refill zones on DRC gets saved in /root/.config/kicad/pcbnew as RefillZonesBeforeDrc
-                'key',
-                'Tab',
-                'space', # Enable reporting all errors for tracks
-                'Tab',
-                'Tab',
-                'Tab',
-                'space',
-                'Tab'
-            ])
-            logger.info('Pasting output dir')
-            xdotool(['key', 'ctrl+v'])
+                logger.info('Open Inspect->DRC')
+                xdotool(['key', 'alt+i', 'd'])
 
-            xdotool(['key', 'Return'])
+                logger.info('Focus DRC modal window')
+                wait_for_window('DRC modal window', 'DRC Control')
+                xdotool(['key',
+                    'Tab',
+                    'Tab',
+                    'Tab', # Refill zones on DRC gets saved in /root/.config/kicad/pcbnew as RefillZonesBeforeDrc
+                    'key',
+                    'Tab',
+                    'space', # Enable reporting all errors for tracks
+                    'Tab',
+                    'Tab',
+                    'Tab',
+                    'space',
+                    # 'Tab'
+                ])
 
-            wait_for_window('Report completed dialog', 'Disk File Report Completed')
-            xdotool(['key', 'Return'])
-            pcbnew_proc.terminate()
+                logger.info('Pasting output dir')
+                xdotool(['key', 'ctrl+v'])
+                xdotool(['key', 'Return'])
+
+                wait_for_window('Report completed dialog', 'Disk File Report Completed')
+                xdotool(['key', 'Return'])
+
+                pcbnew_proc.terminate()
+
+        except Exception as e:
+            print('err found during getting drc')
+            pass
 
     return drc_output_file
 
@@ -140,7 +151,13 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    drc_result = parse_drc(run_drc(args.kicad_pcb_file, args.output_dir, args.record))
+    try:
+        drc_result = parse_drc(run_drc(args.kicad_pcb_file, args.output_dir, args.record))
+        pass
+    except Exception as e:
+        os.system('ls -l '+args.kicad_pcb_file)
+        print(f'input kicad_pcb file path: {args.kicad_pcb_file}')
+        pass
 
     logging.info(drc_result);
     if drc_result['drc_errors'] == 0 and drc_result['unconnected_pads'] == 0:
@@ -152,4 +169,3 @@ if __name__ == '__main__':
             drc_result['unconnected_pads']
         ))
         exit(drc_result['drc_errors']+drc_result['unconnected_pads'])
-    

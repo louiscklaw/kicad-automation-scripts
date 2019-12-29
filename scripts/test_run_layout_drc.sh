@@ -9,7 +9,7 @@ docker run --rm -it \
   -v $PWD/src:/usr/lib/python3/dist-packages/kicadAutomation \
   -v $1:/kicad-project \
   logickee/kicad-automation-scripts \
-  python -m kicadAutomation.pcbnew_automation.run_drc /kicad-project/test.kicad_pcb /kicad-project/DRC_output
+  python3 -m kicadAutomation.pcbnew_automation.run_drc /kicad-project/test.kicad_pcb /kicad-project/DRC_output
 
 sudo chown 1000:1000 -R $1/DRC_output
 

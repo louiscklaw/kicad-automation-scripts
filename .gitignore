@@ -2,6 +2,8 @@
 *bak
 test/test_proj1/SVG_output
 test/test_proj1/ERC_output
+*.ogv
+**/*_output
 
 dockerfiles/temp
 
