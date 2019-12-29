@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SCH_FILE=test.sch
-PCB_FILE=test.pcb
+PCB_FILE=test.kicad_pcb
 
 echo 'test 1'
 
