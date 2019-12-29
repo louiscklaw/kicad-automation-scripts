@@ -17,20 +17,22 @@
 
 import argparse
 import logging
-import os
+import os, sys
 import pcbnew
 import shutil
 import zipfile
 from PyPDF2 import PdfFileMerger, PdfFileReader
 from collections import namedtuple
 
+PROJ_HOME = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(PROJ_HOME)
 import pcb_util
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 def plot(pcb, file_format, layers, plot_directory):
-    
+
     temp_dir = os.path.join(plot_directory, 'temp')
     shutil.rmtree(temp_dir, ignore_errors=True)
     try:
@@ -80,11 +82,11 @@ def plot_to_directory(pcb, file_format, layers, plot_directory, temp_dir):
 
         merger.write(plot_directory+'/{}.pdf'.format(pcb.name))
 
-    
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Plot a KiCad PCB layout')
-    
+
     parser.add_argument('pcb_file', help='The pcbnew layout (.kicad_pcb) file')
     parser.add_argument('output_dir', help='Output directory')
 
