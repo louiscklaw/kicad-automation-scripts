@@ -12,4 +12,6 @@ docker run --rm -it \
 
 sudo chown 1000:1000 -R test/test_proj1/SVG_output
 
+ls -l test/test_proj1/ERC_output/test.svg
+
 echo 'gen_svg done'
