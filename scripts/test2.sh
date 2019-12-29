@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 
+SCH_FILE=test_proj2.sch
+PCB_FILE=test_proj2.kicad_pcb
+
 echo 'test 2'
   sh scripts/test_run_erc.sh \
     $PWD/test/test_proj2 \
-    /kicad-project/test_proj2.sch /kicad-project/ERC_output
+    /kicad-project/$SCH_FILE /kicad-project/ERC_output
 
   echo 'checking output'
   ls -l $PWD/test/test_proj2/ERC_output/test_proj2.erc
 
   sh scripts/test_gen_svg.sh \
     $PWD/test/test_proj2 \
-    /kicad-project/test_proj2.sch /kicad-project/SVG_output
+    /kicad-project/$SCH_FILE /kicad-project/SVG_output
 
   echo 'checking output'
   ls -l $PWD/test/test_proj2/SVG_output/test_proj2.svg
@@ -23,7 +26,7 @@ echo 'test 2'
   echo 'generate drc'
   sh scripts/test_run_layout_drc.sh \
     $PWD/test/test_proj2 \
-    /kicad-project/test_proj2.kicad_pcb \
+    /kicad-project/$PCB_FILE \
     /kicad-project/DRC_output
 
   echo 'checking output'
@@ -34,7 +37,7 @@ echo 'test 2'
   echo 'getting gerber archive'
   sh scripts/test_gen_zip_ger_file.sh \
     $PWD/test/test_proj2 \
-    /kicad-project/test_proj2.kicad_pcb /kicad-project/GER_output
+    /kicad-project/$PCB_FILE /kicad-project/GER_output
 
   echo 'checking output'
   ls -l $PWD/test/test_proj2/GER_output/test_proj2_gerbers.zip

@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+SCH_FILE=test.sch
+PCB_FILE=test.pcb
+
 echo 'test 1'
 
   echo 'generate ERC'
   sh scripts/test_run_erc.sh \
     $PWD/test/test_proj1 \
-    /kicad-project/test.sch /kicad-project/ERC_output \
+    /kicad-project/$SCH_FILE /kicad-project/ERC_output \
 
   echo 'checking output'
   ls -l $PWD/test/test_proj1/ERC_output/test.erc
@@ -14,7 +17,7 @@ echo 'test 1'
   echo 'generate SVG'
   sh scripts/test_gen_svg.sh \
     $PWD/test/test_proj1 \
-    /kicad-project/test.sch /kicad-project/SVG_output
+    /kicad-project/$SCH_FILE /kicad-project/SVG_output
 
   echo 'checking output'
   ls -l $PWD/test/test_proj1/SVG_output/test.svg
@@ -23,7 +26,7 @@ echo 'test 1'
   echo 'generate drc'
   sh scripts/test_run_layout_drc.sh \
     $PWD/test/test_proj1 \
-    /kicad-project/test.kicad_pcb /kicad-project/DRC_output
+    /kicad-project/$PCB_FILE /kicad-project/DRC_output
 
   echo 'checking output'
   ls -l $PWD/test/test_proj1/DRC_output/drc_result.rpt
@@ -33,7 +36,7 @@ echo 'test 1'
   echo 'getting gerber archive'
   sh scripts/test_gen_zip_ger_file.sh \
     $PWD/test/test_proj1 \
-    /kicad-project/test_proj1.kicad_pcb /kicad-project/GER_output
+    /kicad-project/$PCB_FILE /kicad-project/GER_output
 
   echo 'checking output'
   ls -l $PWD/test/test_proj1/GER_output/test_gerbers.zip
