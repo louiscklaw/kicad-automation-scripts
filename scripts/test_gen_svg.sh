@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
 
 # rm -rf /kicad-project/output
-echo "schematic directory: $1"
-echo "output directory: $2"
+echo "schematic directory: $2"
+echo "output directory: $3"
 
 docker run --rm -it \
-  -v $PWD/test/test_proj1:/kicad-project \
   -v $PWD/src:/usr/lib/python3/dist-packages/kicadAutomation \
+  -v $1:/kicad-project \
   logickee/kicad-automation-scripts \
-  python3 -m kicadAutomation.eeschema.schematic export /kicad-project/test.sch /kicad-project/SVG_output
+  python3 -m kicadAutomation.eeschema.schematic export $2 $3
 
-sudo chown 1000:1000 -R test/test_proj1/SVG_output
-
-ls -l test/test_proj1/ERC_output/test.svg
+sudo chown 1000:1000 -R $1/SVG_output
 
 echo 'gen_svg done'
