@@ -58,12 +58,13 @@ def recorded_xvfb(video_filename, **xvfb_args):
                 '--no-sound',
                 '--no-frame',
                 '--on-the-fly-encoding',
-                '-o', video_filename], close_fds=True) as screencast_proc: 
+                '-o', video_filename], close_fds=True) as screencast_proc:
             yield
             screencast_proc.terminate()
 
 
 def xdotool(command):
+    print(command)
     return subprocess.check_output(['xdotool'] + command)
 
 def clipboard_store(string):

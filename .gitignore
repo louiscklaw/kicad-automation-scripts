@@ -5,6 +5,8 @@ test/test_proj1/ERC_output
 **/*.ogv
 **/*_output
 **/*.log
+**/*.png
+**/*.jpg
 
 dockerfiles/temp
 
