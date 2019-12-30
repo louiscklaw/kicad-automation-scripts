@@ -42,3 +42,25 @@ echo 'test 2'
   echo 'checking output'
   ls -l $PWD/test/test_proj2/GER_output/test_proj2_gerbers.zip
   echo 'GER archive generation done'
+
+  echo 'getting 3d graphs'
+  sh scripts/test_run_3d_gen.sh \
+    $PWD/test/test_proj2 \
+    /kicad-project/$PCB_FILE /kicad-project/3d_PNG_output
+
+  echo 'checking output'
+  ls -l $PWD/test/test_proj2/basicx.png
+  ls -l $PWD/test/test_proj2/basicX.png
+  ls -l $PWD/test/test_proj2/basicy.png
+  ls -l $PWD/test/test_proj2/basicY.png
+  ls -l $PWD/test/test_proj2/basicz.png
+  ls -l $PWD/test/test_proj2/basicZ.png
+
+  ls -l $PWD/test/test_proj2/raytracingx.png
+  ls -l $PWD/test/test_proj2/raytracingX.png
+  ls -l $PWD/test/test_proj2/raytracingy.png
+  ls -l $PWD/test/test_proj2/raytracingY.png
+  ls -l $PWD/test/test_proj2/raytracingz.png
+  ls -l $PWD/test/test_proj2/raytracingZ.png
+
+  echo '3d_png generation done'
