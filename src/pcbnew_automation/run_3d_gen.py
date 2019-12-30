@@ -22,102 +22,6 @@ from util.ui_automation import (
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-# def parse_drc(drc_file):
-#     from re import search as regex_search
-
-#     with open(drc_file, 'r') as f:
-#         lines = f.read().splitlines()
-
-#     drc_errors = None
-#     unconnected_pads = None
-
-#     for line in lines:
-#         if drc_errors != None and unconnected_pads != None:
-#             break;
-#         m = regex_search(
-#             '^\*\* Found ([0-9]+) DRC errors \*\*$', line)
-#         if m != None:
-#             drc_errors = m.group(1);
-#             continue
-#         m = regex_search(
-#             '^\*\* Found ([0-9]+) unconnected pads \*\*$', line)
-#         if m != None:
-#             unconnected_pads = m.group(1);
-#             continue
-
-#     return {
-#         'drc_errors': int(drc_errors),
-#         'unconnected_pads': int(unconnected_pads)
-#     }
-
-
-def run_drc(pcb_file, output_dir, record=True):
-
-    file_util.mkdir_p(output_dir)
-
-    recording_file = os.path.join(output_dir, 'run_drc_screencast.ogv')
-    drc_output_file = os.path.join(os.path.abspath(output_dir), 'drc_result.rpt')
-
-    print(f'recorded file {recording_file}')
-
-    # TODO: remove me
-    # xvfb_kwargs = {
-	#     'width': 800,
-	#     'height': 600,
-	#     'colordepth': 24,
-    # }
-
-    # with recorded_xvfb(recording_file, **xvfb_kwargs) if record else Xvfb(**xvfb_kwargs):
-    with recorded_xvfb(recording_file, width=1024, height=768, colordepth=24):
-        try:
-            with PopenContext(['pcbnew', pcb_file], close_fds=True) as pcbnew_proc:
-                # # modify for python3
-                clipboard_store(bytearray(drc_output_file.encode('utf-8')))
-
-                window = wait_for_window('pcbnew', 'Pcbnew', 10, False)
-
-                logger.info('Focus main pcbnew window')
-                wait_for_window('pcbnew', 'Pcbnew')
-
-                # Needed to rebuild the menu, making sure it is actually built
-                xdotool(['windowsize', '--sync', window, '1024', '768'])
-
-                wait_for_window('pcbnew', 'Pcbnew')
-
-                logger.info('Open Inspect->DRC')
-                xdotool(['key', 'alt+i', 'd'])
-
-                logger.info('Focus DRC modal window')
-                wait_for_window('DRC modal window', 'DRC Control')
-                xdotool(['key',
-                    'Tab',
-                    'Tab',
-                    'Tab', # Refill zones on DRC gets saved in /root/.config/kicad/pcbnew as RefillZonesBeforeDrc
-                    'key',
-                    'Tab',
-                    'space', # Enable reporting all errors for tracks
-                    'Tab',
-                    'Tab',
-                    'Tab',
-                    'space',
-                    # 'Tab'
-                ])
-
-                logger.info('Pasting output dir')
-                xdotool(['key', 'ctrl+v'])
-                xdotool(['key', 'Return'])
-
-                wait_for_window('Report completed dialog', 'Disk File Report Completed')
-                xdotool(['key', 'Return'])
-
-                pcbnew_proc.terminate()
-
-        except Exception as e:
-            print('err found during getting drc')
-            pass
-
-    return drc_output_file
-
 def sleep_some_seconds(second_s):
     from time import sleep
     sleep(second_s)
@@ -135,14 +39,19 @@ def try_zoom_to_fit():
     xdotool(['key', 'Alt_L+v','f'])
     sleep_some_seconds(1)
 
-def save_png(filename):
+def save_png(out_dir, filename):
     logger.info('save png')
     window = wait_for_window('3D Viewer', '3D Viewer')
     xdotool(['key', 'Alt_L+f','Return'])
     sleep_some_seconds(1)
 
     logger.info('Pasting output dir')
-    xdotool(['key', *filename])
+    # xdotool(['key', *out_dir])
+    # xdotool(['key', 'slash'])
+    # xdotool(['key', *filename])
+    save_to_filename = out_dir+'/'+filename
+    clipboard_store(bytearray(save_to_filename.encode('utf-8')))
+    xdotool(['key', 'ctrl+v'])
     sleep_some_seconds(1)
 
     xdotool(['key', 'Return'])
@@ -153,13 +62,13 @@ def get_view(view_direction):
     xdotool(['key', view_direction])
     sleep_some_seconds(1)
 
-def try_render_six_side(second_s=0, filename_prefix='basic'):
+def try_render_six_side(out_dir, second_s=0,  filename_prefix='basic_'):
     for view_dir in ['x','X','y','Y','z','Z']:
         save_to_filename_prefix = filename_prefix+view_dir
         logger.info(f'getting {view_dir} ... ')
         get_view(view_dir)
         sleep_some_seconds(second_s)
-        save_png(save_to_filename_prefix)
+        save_png(out_dir, save_to_filename_prefix)
 
 def try_reset_default_settings():
     logger.info('try reset default settings')
@@ -173,12 +82,23 @@ def try_turn_on_ray_tracing():
     # sleep_some_seconds(1)
     xdotool(['key', 'Down','Return'])
 
-def try_render_ray_tracing_six_side(raytracing_render_s=5):
+def try_render_ray_tracing_six_side(out_dir, raytracing_render_s=5):
     try_turn_on_ray_tracing()
-    try_render_six_side(raytracing_render_s, 'ray_tracing')
+    try_render_six_side(out_dir, raytracing_render_s, 'ray_tracing_')
 
 def try_exit():
     sys.exit()
+
+def try_start_PCBNEW():
+    window = wait_for_window('pcbnew', 'Pcbnew', 10, False)
+
+    logger.info('Focus main pcbnew window')
+    wait_for_window('pcbnew', 'Pcbnew')
+
+    # Needed to rebuild the menu, making sure it is actually built
+    xdotool(['windowsize', '--sync', window, '1024', '768'])
+
+    wait_for_window('pcbnew', 'Pcbnew')
 
 def run_gen_3d(pcb_file, output_dir, record=True):
     file_util.mkdir_p(output_dir)
@@ -191,23 +111,15 @@ def run_gen_3d(pcb_file, output_dir, record=True):
     with recorded_xvfb(recording_file, width=1024, height=768, colordepth=24):
         try:
             with PopenContext(['pcbnew', pcb_file], close_fds=True) as pcbnew_proc:
-                window = wait_for_window('pcbnew', 'Pcbnew', 10, False)
-
-                logger.info('Focus main pcbnew window')
-                wait_for_window('pcbnew', 'Pcbnew')
-
-                # Needed to rebuild the menu, making sure it is actually built
-                xdotool(['windowsize', '--sync', window, '1024', '768'])
-
-                wait_for_window('pcbnew', 'Pcbnew')
+                try_start_PCBNEW()
 
                 try_open_3d_viewer()
 
                 try_reset_default_settings()
 
                 try_zoom_to_fit()
-                try_render_six_side()
-                try_render_ray_tracing_six_side(5)
+                try_render_six_side(output_dir)
+                try_render_ray_tracing_six_side(output_dir, 5)
 
                 try_exit()
         except Exception as e:

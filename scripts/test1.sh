@@ -48,5 +48,18 @@ echo 'test 1'
     /kicad-project/$PCB_FILE /kicad-project/3d_PNG_output
 
   echo 'checking output'
-  ls -l $PWD/test/test_proj1/GER_output/test_gerbers.zip
+  ls -l $PWD/test/test_proj1/basicx.png
+  ls -l $PWD/test/test_proj1/basicX.png
+  ls -l $PWD/test/test_proj1/basicy.png
+  ls -l $PWD/test/test_proj1/basicY.png
+  ls -l $PWD/test/test_proj1/basicz.png
+  ls -l $PWD/test/test_proj1/basicZ.png
+
+  ls -l $PWD/test/test_proj1/raytracingx.png
+  ls -l $PWD/test/test_proj1/raytracingX.png
+  ls -l $PWD/test/test_proj1/raytracingy.png
+  ls -l $PWD/test/test_proj1/raytracingY.png
+  ls -l $PWD/test/test_proj1/raytracingz.png
+  ls -l $PWD/test/test_proj1/raytracingZ.png
+
   echo '3d_png generation done'
