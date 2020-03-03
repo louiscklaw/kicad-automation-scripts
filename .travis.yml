@@ -1,7 +1,12 @@
 dist: bionic
 
-script:
+before_script:
   - docker login -u logickee -p $DOCKER_PASSWORD
+
+after_script:
+  - docker logout
+
+script:
   - sudo sh scripts/build_docker.sh
   - sudo sh scripts/push_docker.sh
   # - sudo sh scripts/build.sh
