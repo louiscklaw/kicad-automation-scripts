@@ -3,7 +3,8 @@ FROM logickee/kicad-base
 RUN apt-get -y update && \
     apt-get install -y python3 python3-pip xvfb recordmydesktop xdotool xclip && \
     apt-get install -y dbus-x11 && \
-    apt-get install -y at-spi2-core
+    apt-get install -y at-spi2-core && \
+    apt-get install -y scrot
 
 # Use a UTF-8 compatible LANG because KiCad 5 uses UTF-8 in the PCBNew title
 # This causes a "failure in conversion from UTF8_STRING to ANSI_X3.4-1968" when
